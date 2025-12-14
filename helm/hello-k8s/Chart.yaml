@@ -1,0 +1,6 @@
+apiVersion: v2
+name: hello-k8s
+description: Minimal demo app for Jenkins+Helm rolling deploy
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

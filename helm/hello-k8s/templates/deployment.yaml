@@ -23,6 +23,12 @@ spec:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
     spec:
       terminationGracePeriodSeconds: 10
+
+      volumes:
+        - name: web
+          configMap:
+            name: {{ include "hello-k8s.fullname" . }}
+
       containers:
         - name: nginx
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -46,9 +52,3 @@ spec:
               port: 80
             initialDelaySeconds: 10
             periodSeconds: 10
-          resources:
-  {{ toYaml .Values.resources | nindent 12 }}
-volumes:
-  - name: web
-    configMap:
-      name: {{ include "hello-k8s.fullname" . }}

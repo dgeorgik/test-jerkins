@@ -8,7 +8,7 @@ image:
 service:
   type: NodePort
   port: 80
-  nodePort: 30080
+  nodePort: null
 
 pageTitle: "Hello from Jenkins + Helm"
 message: "Edit values.yaml or templates/configmap.yaml to trigger rolling update"

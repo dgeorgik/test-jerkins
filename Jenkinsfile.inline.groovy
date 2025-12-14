@@ -3,9 +3,13 @@ pipeline {
   options {
     timestamps()
     disableConcurrentBuilds()
+    skipDefaultCheckout(true)
   }
 
   environment {
+    REPO_URL = "https://github.com/dgeorgik/test-jerkins.git"
+    BRANCH   = "main"
+
     NAMESPACE = "demo"
     RELEASE   = "hello-k8s"
     CHART_DIR = "helm/hello-k8s"
@@ -14,9 +18,14 @@ pipeline {
   }
 
   stages {
+    stage('Checkout') {
+      steps {
+        git branch: "${BRANCH}", url: "${REPO_URL}"
+      }
+    }
+
     stage('Build') {
       steps {
-        checkout scm
         sh '''
           #!/bin/sh
           bash -s <<BASH
@@ -36,9 +45,6 @@ pipeline {
             mv /tmp/linux-amd64/helm .tools/bin/helm
             chmod +x .tools/bin/helm
           fi
-
-          helm version
-          kubectl version --client=true
 
           helm lint "$CHART_DIR"
 

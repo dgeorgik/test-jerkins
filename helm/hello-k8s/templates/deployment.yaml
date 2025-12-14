@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{ include "hello-k8s.fullname" . }}
   labels:
-{{ include "hello-k8s.labels" . | nindent 4 }}
+  {{ include "hello-k8s.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   revisionHistoryLimit: 2
@@ -14,41 +14,41 @@ spec:
       maxUnavailable: 0
   selector:
     matchLabels:
-{{ include "hello-k8s.selectorLabels" . | nindent 6 }}
-  template:
-    metadata:
-      labels:
-{{ include "hello-k8s.selectorLabels" . | nindent 8 }}
-      annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
-    spec:
-      terminationGracePeriodSeconds: 10
-      containers:
-        - name: nginx
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - name: http
-              containerPort: 80
-          volumeMounts:
-            - name: web
-              mountPath: /usr/share/nginx/html/index.html
-              subPath: index.html
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
-            initialDelaySeconds: 2
-            periodSeconds: 5
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-            initialDelaySeconds: 10
-            periodSeconds: 10
-          resources:
-{{ toYaml .Values.resources | nindent 12 }}
-      volumes:
+  {{ include "hello-k8s.selectorLabels" . | nindent 6 }}
+template:
+  metadata:
+    labels:
+  {{ include "hello-k8s.selectorLabels" . | nindent 8 }}
+annotations:
+  checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+spec:
+  terminationGracePeriodSeconds: 10
+  containers:
+    - name: nginx
+      image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+      imagePullPolicy: {{ .Values.image.pullPolicy }}
+      ports:
+        - name: http
+          containerPort: 80
+      volumeMounts:
         - name: web
-          configMap:
-            name: {{ include "hello-k8s.fullname" . }}
+          mountPath: /usr/share/nginx/html/index.html
+          subPath: index.html
+      readinessProbe:
+        httpGet:
+          path: /
+          port: http
+        initialDelaySeconds: 2
+        periodSeconds: 5
+      livenessProbe:
+        httpGet:
+          path: /
+          port: http
+        initialDelaySeconds: 10
+        periodSeconds: 10
+      resources:
+  {{ toYaml .Values.resources | nindent 12 }}
+volumes:
+  - name: web
+    configMap:
+      name: {{ include "hello-k8s.fullname" . }}

@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: {{ include "hello-k8s.fullname" . }}
   labels:
-{{ include "hello-k8s.labels" . | nindent 4 }}
+  {{ include "hello-k8s.labels" . | nindent 4 }}
 data:
   index.html: |
     <!doctype html>

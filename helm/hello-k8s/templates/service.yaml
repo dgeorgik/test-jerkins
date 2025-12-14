@@ -3,13 +3,13 @@ kind: Service
 metadata:
   name: {{ include "hello-k8s.fullname" . }}
   labels:
-{{ include "hello-k8s.labels" . | nindent 4 }}
+  {{ include "hello-k8s.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   selector:
-{{ include "hello-k8s.selectorLabels" . | nindent 4 }}
-  ports:
-    - name: http
-      port: {{ .Values.service.port }}
-      targetPort: http
-      nodePort: {{ .Values.service.nodePort }}
+  {{ include "hello-k8s.selectorLabels" . | nindent 4 }}
+ports:
+  - name: http
+    port: {{ .Values.service.port }}
+    targetPort: http
+    nodePort: {{ .Values.service.nodePort }}

@@ -11,7 +11,7 @@ service:
   nodePort: null
 
 pageTitle: "Hello from Jenkins + Helm"
-message: "Edit values.yaml or templates/configmap.yaml to trigger rolling update"
+message: "rollout test 1"
 buildInfo: "local"
 
 resources:

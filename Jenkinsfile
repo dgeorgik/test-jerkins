@@ -9,7 +9,7 @@ pipeline {
     NAMESPACE = "demo"
     RELEASE   = "hello-k8s"
     CHART_DIR = "helm/hello-k8s"
-    KUBECONFIG_CRED_ID = "kubeconfig-admin"
+    KUBECONFIG_CRED_ID = "kube-adm"
     HELM_VERSION = "v3.15.4"
   }
 
